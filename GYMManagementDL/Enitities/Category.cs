@@ -6,12 +6,10 @@ using System.Threading.Tasks;
 
 namespace GYMManagementDL.Enitities
 {
-    public abstract class BaseEntity
+    public class Category: BaseEntity
     {
-        public int Id { get; set; }
+        public string CategoryName { get; set; }=null!;
 
-        public DateTime CreatedAt { get; set; }
-
-        public DateTime UpdatedAt { get; set; }
+        public ICollection<Session> Sessions { get; set; }=null!;
     }
 }
