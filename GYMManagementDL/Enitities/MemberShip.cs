@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GYMManagementDL.Enitities
 {
-    internal class MemberShip: BaseEntity
+    public class MemberShip: BaseEntity
     {
         #region Attributes
         // Membership start date = CreatedAt in the BaseEntity

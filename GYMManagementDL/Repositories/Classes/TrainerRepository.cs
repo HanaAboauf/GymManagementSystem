@@ -11,7 +11,13 @@ namespace GYMManagementDL.Repositories.Classes
 {
     internal class TrainerRepository : ITrainerRepository
     {
-      private readonly  GymManagementDbContext dbContext=new GymManagementDbContext();
+
+        private readonly GymManagementDbContext dbContext;
+
+        public TrainerRepository(GymManagementDbContext _dbcontext)
+        {
+            dbContext = _dbcontext;
+        }  
         public int AddTrainer(Trainer member)
         {
             dbContext.Trainers.Add(member);

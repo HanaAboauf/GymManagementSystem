@@ -11,7 +11,13 @@ namespace GYMManagementDL.Repositories.Classes
 {
     internal class MemberSessionRepository : IMemberSessionRepository
     {
-        private readonly GymManagementDbContext dbcontext = new GymManagementDbContext();
+
+        private readonly GymManagementDbContext dbcontext;
+
+        public MemberSessionRepository(GymManagementDbContext _dbcontext)
+        {
+            dbcontext = _dbcontext;
+        }
         public int AddMember(MemberSession member)
         {
             dbcontext.MemberSessions.Add(member);

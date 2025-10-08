@@ -11,7 +11,13 @@ namespace GYMManagementDL.Repositories.Classes
 {
     internal class MemberShipRepository : IMemberShipRepository
     {
-        private readonly GymManagementDbContext _context= new GymManagementDbContext();
+
+        private readonly GymManagementDbContext _context;
+
+        public MemberShipRepository(GymManagementDbContext dbcontext)
+        {
+            _context = dbcontext;
+        }
         public int AddMember(MemberShip member)
         {
             _context.MemberShips.Add(member);

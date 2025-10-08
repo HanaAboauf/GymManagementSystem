@@ -11,7 +11,13 @@ namespace GYMManagementDL.Repositories.Classes
 {
     internal class MemberRepository : IMemberRepository
     {
-        private readonly GymManagementDbContext _dbcontext=new GymManagementDbContext();
+        private readonly GymManagementDbContext _dbcontext;
+
+        public MemberRepository(GymManagementDbContext dbcontext)
+        {
+            _dbcontext = dbcontext;
+        }
+
         public IEnumerable<Member> GetAllMembers()=> _dbcontext.Members.ToList();
         public Member? GetMemberById(int id)=> _dbcontext.Members.Find(id);
         public int AddMember(Member member)

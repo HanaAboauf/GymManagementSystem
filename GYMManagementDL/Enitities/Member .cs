@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GYMManagementDL.Enitities
 {
-    internal class Member:GymUser
+    public class Member:GymUser
     {
         // JoinDate= CreatedAt in the BaseEntity
         public string? photo { get; set; }
