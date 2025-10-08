@@ -9,7 +9,7 @@ namespace GYMManagementDL.Enitities
     public class Member:GymUser
     {
         // JoinDate= CreatedAt in the BaseEntity
-        public string? photo { get; set; }
+        public string? Photo { get; set; }
 
         #region Relationships
 

@@ -1,4 +1,6 @@
 using GYMManagementDL.Data.Contexts;
+using GYMManagementDL.Repositories.Classes;
+using GYMManagementDL.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace GYMManagementPL
@@ -22,6 +24,8 @@ namespace GYMManagementPL
 
             );
 
+            builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            builder.Services.AddScoped<IPlanRepository, PlanRepository>();
 
 
             var app = builder.Build();
