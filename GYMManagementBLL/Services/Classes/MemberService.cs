@@ -13,24 +13,15 @@ namespace GYMManagementBLL.Services.Classes
 {
     internal class MemberService : IMemberService
     {
-        private readonly IGenericRepository<Member> _memberRepository;
-        private readonly IGenericRepository<MemberShip> _membershipRepository;
+        private readonly IUnitOfWork _unitOfWok;
         private readonly IPlanRepository _planRepository;
-        private readonly IGenericRepository<HealthRecord> _healthRecordRepository;
-        private readonly IGenericRepository<MemberSession> _memberSessionRepository;
 
-        public MemberService(IGenericRepository<Member> memberRepository,
-            IGenericRepository<MemberShip> membershipRepository,
-            IPlanRepository planRepository,
-            IGenericRepository<HealthRecord> HealthRecordRepository,
-            IGenericRepository<MemberSession> memberSessionRepository)
+        public MemberService(IUnitOfWork unitOfWok,IPlanRepository planRepository)
         {
-            _memberRepository = memberRepository;
-            _membershipRepository = membershipRepository;
-            _planRepository = planRepository;
-            _healthRecordRepository = HealthRecordRepository;
-            _memberSessionRepository = memberSessionRepository;
+           _unitOfWok = unitOfWok;
+           _planRepository = planRepository;
         }
+
 
         public bool CreateMember(CreateMemberViewModel createdMember)
         {
@@ -39,7 +30,7 @@ namespace GYMManagementBLL.Services.Classes
 
                 if (IsEmailExists(createdMember.Email) || IsPhoneExists(createdMember.Phone)) return false;
 
-                return _memberRepository.Add(new Member()
+                    var member=new Member()
                 {
                     Name = createdMember.Name,
                     Email = createdMember.Email,
@@ -61,7 +52,10 @@ namespace GYMManagementBLL.Services.Classes
 
                     }
 
-                }) > 0;
+                };
+                _unitOfWok.GetRepository<Member>().Add(member);
+
+                return _unitOfWok.SaveChanges()>0;
 
             }
             catch { 
@@ -73,7 +67,7 @@ namespace GYMManagementBLL.Services.Classes
 
         public IEnumerable<MemberViewModel> GetAllMembers()
         {
-            var Members = _memberRepository.GetAll();
+            var Members = _unitOfWok.GetRepository<Member>().GetAll();
             if (Members is null || !Members.Any()) return [];
             return Members.Select(m => new MemberViewModel
             {
@@ -90,7 +84,7 @@ namespace GYMManagementBLL.Services.Classes
         {
             try
             {
-                var Member = _memberRepository.GetById(MemberId);
+                var Member = _unitOfWok.GetRepository<Member>().GetById(MemberId);
 
                 if (Member == null) return null;
                 var memberViewModel = new MemberViewModel()
@@ -103,7 +97,7 @@ namespace GYMManagementBLL.Services.Classes
                     DateOfBirth = Member.DateOfBirth.ToShortDateString(),
 
                 };
-                var ActiveMembership = _membershipRepository.GetAll(ms => ms.MemberId == Member.Id && ms.Status == "Active").FirstOrDefault();
+                var ActiveMembership = _unitOfWok.GetRepository<MemberShip>().GetAll(ms => ms.MemberId == Member.Id && ms.Status == "Active").FirstOrDefault();
 
                 if (ActiveMembership is not null)
                 {
@@ -125,7 +119,7 @@ namespace GYMManagementBLL.Services.Classes
 
         public HealthRecordViewModel? GetMemberHealthRecord(int MemberId)
         {
-            var memberHealthRecord=_healthRecordRepository.GetById(MemberId);
+            var memberHealthRecord= _unitOfWok.GetRepository<HealthRecord>().GetById(MemberId);
             if (memberHealthRecord == null) return null;
             return new HealthRecordViewModel()
             {
@@ -140,7 +134,7 @@ namespace GYMManagementBLL.Services.Classes
 
         public MemberToUpDateViewModel? GetMemberToUpDate(int MemberId)
         {
-            var member = _memberRepository.GetById(MemberId);
+            var member = _unitOfWok.GetRepository<Member>().GetById(MemberId);
 
             if (member == null) return null;
 
@@ -159,26 +153,28 @@ namespace GYMManagementBLL.Services.Classes
 
         public bool RemoveMember(int id)
         {
-           var member= _memberRepository.GetById(id);
+           var member= _unitOfWok.GetRepository<Member>().GetById(id);
 
             if(member is null) return false;
 
-            var HasActiveMembersession=_memberSessionRepository.GetAll(X=>X.MemberId==id && X.Session.StartTime>DateTime.Now).Any();
+            var HasActiveMembersession= _unitOfWok.GetRepository<MemberSession>().GetAll(X=>X.MemberId==id && X.Session.StartTime>DateTime.Now).Any();
 
             if (HasActiveMembersession) return false;
 
-            var ActiveMemberShip=_membershipRepository.GetAll(x=>x.MemberId==id);
+            var ActiveMemberShip= _unitOfWok.GetRepository<MemberShip>().GetAll(x=>x.MemberId==id);
 
             try
             {
                 if (ActiveMemberShip.Any())
                 {
                     foreach (var membership in ActiveMemberShip)
-                    
-                        _membershipRepository.DeleteMember(membership);
+
+                        _unitOfWok.GetRepository<MemberShip>().Delete(membership);
 
                 }
-                return _memberRepository.DeleteMember(member) > 0;
+                _unitOfWok.GetRepository<Member>().Delete(member);
+
+                return _unitOfWok.SaveChanges()>0;
 
             }
             catch
@@ -192,7 +188,7 @@ namespace GYMManagementBLL.Services.Classes
         {
             try
             {
-                var member = _memberRepository.GetById(id);
+                var member = _unitOfWok.GetRepository<Member>().GetById(id);
                 if (member is null || member.Id != id) return false;
 
                 if (IsEmailExists(updatedMember.Email) || IsPhoneExists(updatedMember.Phone)) return false;
@@ -204,7 +200,9 @@ namespace GYMManagementBLL.Services.Classes
                 member.Address.City = updatedMember.City;
                 member.UpdatedAt = DateTime.Now;
 
-                return _memberRepository.Update(member) > 0;
+                 _unitOfWok.GetRepository<Member>().Update(member);
+
+                return _unitOfWok.SaveChanges()>0;
 
             }
             catch

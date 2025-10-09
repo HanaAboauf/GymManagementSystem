@@ -13,10 +13,10 @@ namespace GYMManagementDL.Repositories.Interfaces
 
         public TEntity? GetById(int id);
 
-        public int Add(TEntity entity);
-
-        public int Update(TEntity entity);
-
-        public int DeleteMember(TEntity entity);
-    }
+        public void Add(TEntity entity);
+               
+        public void Update(TEntity entity);
+               
+        public void Delete(TEntity entity);
+    }        
 }

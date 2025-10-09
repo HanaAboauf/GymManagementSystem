@@ -20,17 +20,17 @@ namespace GYMManagementDL.Repositories.Classes
         }
    
 
-        public int Add(TEntity entity)
+        public void Add(TEntity entity)
         {
             _context.Set<TEntity>().Add(entity);
-            return _context.SaveChanges();
+          
 
         }
 
-        public int DeleteMember(TEntity entity)
+        public void DeleteMember(TEntity entity)
         {
             _context.Set<TEntity>().Remove(entity);
-            return _context.SaveChanges();
+           
         }
 
         public IEnumerable<TEntity> GetAll(Func<TEntity, bool>? condition = null)
@@ -43,10 +43,10 @@ namespace GYMManagementDL.Repositories.Classes
 
         public TEntity? GetById(int id)=> _context.Set<TEntity>().Find(id);
 
-        public int Update(TEntity entity)
+        public void Update(TEntity entity)
         {
             _context.Set<TEntity>().Update(entity);
-            return _context.SaveChanges();
+
         }
     }
 }
