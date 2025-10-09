@@ -94,6 +94,7 @@ namespace GYMManagementBLL.Services.Classes
                     Phone = Member.PhoneNumber,
                     Gender = Member.Gender.ToString(),
                     Photo = Member.Photo,
+                    Address=$"{Member.Address.BuildingNo} - {Member.Address.Street} - {Member.Address.City}",
                     DateOfBirth = Member.DateOfBirth.ToShortDateString(),
 
                 };
@@ -218,8 +219,8 @@ namespace GYMManagementBLL.Services.Classes
 
 
         #region Helper Methods
-        bool IsEmailExists(string email) => _memberRepository.GetAll(x => x.Email == email).Any();
-        bool IsPhoneExists(string phone) => _memberRepository.GetAll(x => x.PhoneNumber == phone).Any();
+        bool IsEmailExists(string email) => _unitOfWok.GetRepository<Member>().GetAll(x => x.Email == email).Any();
+        bool IsPhoneExists(string phone) => _unitOfWok.GetRepository<Member>().GetAll(x => x.PhoneNumber == phone).Any();
         #endregion
     }
 
