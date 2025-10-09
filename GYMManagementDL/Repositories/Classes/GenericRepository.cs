@@ -27,10 +27,9 @@ namespace GYMManagementDL.Repositories.Classes
 
         }
 
-        public void DeleteMember(TEntity entity)
+        public void Delete(TEntity entity)
         {
             _context.Set<TEntity>().Remove(entity);
-           
         }
 
         public IEnumerable<TEntity> GetAll(Func<TEntity, bool>? condition = null)
