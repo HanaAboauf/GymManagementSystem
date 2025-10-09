@@ -1,4 +1,5 @@
 ﻿using GYMManagementDL.Enitities;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace GYMManagementDL.Repositories.Interfaces
 {
-    public interface IPlanRepository
+    public interface IUnitOfWork
     {
-        public IEnumerable<Plan> GetAllPlan();
-        public Plan? GetPlanById(int id);
-        public int UpdatePlan(Plan plan);
+        IGenericRepository<TEntity> GetRepository<TEntity> () where TEntity : BaseEntity, new();
+
+        int SaveChanges();
 
     }
 }

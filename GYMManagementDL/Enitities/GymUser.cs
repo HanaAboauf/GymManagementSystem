@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace GYMManagementDL.Enitities
 {
-    public class GymUser: BaseEntity
+    public abstract class GymUser: BaseEntity
     {
         public string Name { get; set; }=null!;
         public string Email { get; set; }=null!;
