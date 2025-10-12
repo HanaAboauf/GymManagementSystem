@@ -1,4 +1,5 @@
 using GYMManagementDL.Data.Contexts;
+using GYMManagementDL.Data.DataSeeding;
 using GYMManagementDL.Repositories.Classes;
 using GYMManagementDL.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -33,6 +34,20 @@ namespace GYMManagementPL
 
 
             var app = builder.Build();
+
+            #region Seeding Data
+
+           using var scope= app.Services.CreateScope();
+
+            var dbContext = scope.ServiceProvider.GetRequiredService<GymManagementDbContext>();
+           var pendingMigrations= dbContext.Database.GetPendingMigrations();
+            if(pendingMigrations?.Any()??false) dbContext.Database.Migrate();
+            GymManagementDbContextSeeding.IsSeeding(dbContext);
+
+
+           
+
+            #endregion
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
