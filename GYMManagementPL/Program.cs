@@ -1,3 +1,4 @@
+using GYMManagementBLL;
 using GYMManagementDL.Data.Contexts;
 using GYMManagementDL.Data.DataSeeding;
 using GYMManagementDL.Repositories.Classes;
@@ -28,6 +29,9 @@ namespace GYMManagementPL
             builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
             builder.Services.AddScoped<IPlanRepository, PlanRepository>();
+            builder.Services.AddScoped<ISessionRepository, SessionRepository>();
+            builder.Services.AddAutoMapper(x => x.AddProfile(new MappingProfile()));
+
 
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 

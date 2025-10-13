@@ -12,27 +12,31 @@ namespace GYMManagementDL.Repositories.Classes
 {
     public class UnitOfWork : IUnitOfWork // I act with unit of work as a my dbcontext 
     {
-        private readonly GymManagementDbContext context;
+        private readonly GymManagementDbContext _context;
         private readonly Dictionary<Type, object> _repositories = new(); 
 
-        public UnitOfWork(GymManagementDbContext context)
+        public UnitOfWork(GymManagementDbContext context, ISessionRepository sessionRepository)
         {
-            this.context = context;
+            _context = context;
+            SessionRepository = sessionRepository;
         }
+
+        public ISessionRepository SessionRepository { get; }
+
         public IGenericRepository<TEntity> GetRepository<TEntity>() where TEntity : BaseEntity, new()
         {
             var EntityType = typeof(TEntity);
 
             if (_repositories.TryGetValue(EntityType, out var Repo)) return (IGenericRepository<TEntity>)Repo;
 
-            var NewRepo=new GenericRepository<TEntity>(context);
+            var NewRepo=new GenericRepository<TEntity>(_context);
             _repositories[EntityType] = NewRepo;
             return NewRepo;
         }
 
         public int SaveChanges()
         {
-            return context.SaveChanges();
+            return _context.SaveChanges();
         }
     }
 }
