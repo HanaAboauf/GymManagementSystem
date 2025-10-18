@@ -20,18 +20,18 @@ namespace GYMManagementBLL.ViewModel.SessionViewModels
 
         #region Computed Property
 
-        public string DisplayedDate => $"{ StartDate :MMM dd, yyy}";
+        public string DisplayedDate => $"{StartTime:MMM dd, yyy}";
 
-        public string TimeRangeDisplayed => $"{StartDate:hh:mm tt} - {EndDate:hh:mm tt}";
+        public string TimeRangeDisplayed => $"{StartTime:hh:mm tt} - {EndTime:hh:mm tt}";
 
-        public TimeSpan Duration=> EndDate- StartDate;
+        public TimeSpan Duration=> EndTime - StartTime;
 
         public string Status
         {
             get
             {
-                if (StartDate > DateTime.Now) return "Upcoming";
-                else if (StartDate<= DateTime.Now && EndDate > DateTime.Now) return "Ongoing";
+                if (StartTime > DateTime.Now) return "Upcoming";
+                else if (StartTime <= DateTime.Now && EndTime > DateTime.Now) return "Ongoing";
                 else return "Completed";
             }
         }
