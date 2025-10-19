@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace GYMManagementBLL.ViewModel.TrainerViewModels
 {
-    internal class CreateTrainerViewModel
+    public class CreateTrainerViewModel
     {
 
         #region Name
