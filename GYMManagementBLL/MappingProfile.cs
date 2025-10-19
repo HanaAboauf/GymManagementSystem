@@ -50,7 +50,8 @@ namespace GYMManagementBLL
             //second option for mapping if we want to use it as a separete entity
 
             CreateMap<CreateMemberViewModel, Member>().ForMember(dest => dest.Address, opt => opt.MapFrom(src => src))
-                                                      .ForMember(dest=>dest.HealthRecord,opt=>opt.MapFrom(src=>src.HealthRecord));
+                                                      .ForMember(dest=>dest.HealthRecord,opt=>opt.MapFrom(src=>src.HealthRecord))
+                                                      .ForMember(dest=>dest.PhoneNumber,opt=>opt.MapFrom(src=>src.Phone));
             CreateMap<HealthRecordViewModel, HealthRecord>().ReverseMap();
 
             CreateMap<CreateMemberViewModel, Address>().ForMember(dest => dest.BuildingNo, opt => opt.MapFrom(src => src.BuildingNumber))
@@ -73,6 +74,7 @@ namespace GYMManagementBLL
             // Also we ignore name and photo because they won't be updated in this mapping
             CreateMap<MemberToUpDateViewModel, Member>().ForMember(dest => dest.Name,opt=>opt.Ignore())
                                                         .ForMember(dest => dest.Photo,opt=>opt.Ignore())
+                                                        .ForMember(dest => dest.PhoneNumber,opt=>opt.MapFrom(src=>src.Phone))
                                                         .AfterMap((src, dest) =>
                                                         {
                                                             dest.Address.BuildingNo = src.BuildingNumber;

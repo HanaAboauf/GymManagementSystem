@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace GYMManagementBLL.ViewModel.MemberViewModels
 {
-    internal class MemberToUpDateViewModel
+    public class MemberToUpDateViewModel
     {
         public string Name { get; set; } = null!;
         public string? Photo { get; set; }

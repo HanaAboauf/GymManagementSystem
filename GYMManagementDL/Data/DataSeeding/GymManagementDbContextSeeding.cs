@@ -20,7 +20,7 @@ namespace GYMManagementDL.Data.DataSeeding
 
                 if (!HasPlan)
                 {
-                    var plans = LoadDataFromFile<Plan>("plans.json");
+                    var plans = LoadDataFromFile<Plan>("filesplans.json");
                     if(plans.Any() ) dbContext.AddRange(plans);
                 }
                 if (!HasCategories) 
@@ -40,7 +40,7 @@ namespace GYMManagementDL.Data.DataSeeding
 
       private static List<T> LoadDataFromFile<T>(string fileName)
         {
-            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\",fileName);
+            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\files",fileName);
 
             if (!File.Exists(filePath)) throw new FileNotFoundException();
 

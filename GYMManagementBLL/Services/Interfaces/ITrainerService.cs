@@ -15,7 +15,7 @@ namespace GYMManagementBLL.Services.Interfaces
 
         bool CreateTrainer(CreateTrainerViewModel CreatedTrainer);
 
-        TrainerViewModel? GetTrainer(int TrainerId);
+        TrainerViewModel? GetTrainerDetails(int TrainerId);
 
         TrainerToUpdateViewModel? GetTrainerToUpDate(int TrainerId);
 

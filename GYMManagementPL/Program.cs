@@ -33,6 +33,7 @@ namespace GYMManagementPL
             builder.Services.AddScoped<IPlanRepository, PlanRepository>();
             builder.Services.AddScoped<ISessionRepository, SessionRepository>();
             builder.Services.AddScoped<IAnalyticsDataService, AnalyticsDataService>();
+            builder.Services.AddScoped<IMemberService, MemberService>();
             builder.Services.AddAutoMapper(x => x.AddProfile(new MappingProfile()));
 
 

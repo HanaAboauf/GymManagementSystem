@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace GYMManagementBLL.Services.Classes
 {
-    internal class MemberService : IMemberService
+    public class MemberService : IMemberService
     {
         private readonly IUnitOfWork _unitOfWok;
         private readonly IPlanRepository _planRepository;
@@ -91,7 +91,7 @@ namespace GYMManagementBLL.Services.Classes
             #endregion
         }
 
-        public MemberViewModel? GetMember(int MemberId)
+        public MemberViewModel? GetMemberDetails(int MemberId)
         {
             try
             {
@@ -155,9 +155,10 @@ namespace GYMManagementBLL.Services.Classes
 
             if(member is null) return false;
 
-            var HasActiveMembersession= _unitOfWok.GetRepository<MemberSession>().GetAll(X=>X.MemberId==id && X.Session.StartTime>DateTime.Now).Any();
+            var SessionIds= _unitOfWok.GetRepository<MemberSession>().GetAll(X=>X.MemberId==id ).Select(s=>s.SessionId);
+            var hasFutureSessions= _unitOfWok.GetRepository<Session>().GetAll(x=>SessionIds.Contains(x.Id) && x.StartTime >DateTime.Now).Any();
 
-            if (HasActiveMembersession) return false;
+            if (hasFutureSessions) return false;
 
             var ActiveMemberShip= _unitOfWok.GetRepository<MemberShip>().GetAll(x=>x.MemberId==id);
 
@@ -188,8 +189,12 @@ namespace GYMManagementBLL.Services.Classes
             {
                 var member = _unitOfWok.GetRepository<Member>().GetById(id);
                 if (member is null || member.Id != id) return false;
+                var EmailExists = _unitOfWok.GetRepository<Member>()
+                                          .GetAll(x => x.Email == updatedMember.Email && x.Id != id).Any();
+                var PhoneExists = _unitOfWok.GetRepository<Member>()
+                           .GetAll(x => x.Email == updatedMember.Phone && x.Id != id).Any();
 
-                if (IsEmailExists(updatedMember.Email) || IsPhoneExists(updatedMember.Phone)) return false;
+                if (EmailExists || PhoneExists) return false;
 
                _mapper.Map(updatedMember, member);
 

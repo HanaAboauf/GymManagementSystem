@@ -71,7 +71,7 @@ namespace GYMManagementBLL.Services.Classes
             #endregion
         }
 
-        public TrainerViewModel? GetTrainer(int TrainerId)
+        public TrainerViewModel? GetTrainerDetails(int TrainerId)
         {
             try
             {

@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace GYMManagementBLL.Services.Interfaces
 {
-    internal interface IMemberService
+    public interface IMemberService
     {
         IEnumerable<MemberViewModel> GetAllMembers();
 
         bool CreateMember(CreateMemberViewModel CreatedMember);
 
-        MemberViewModel? GetMember(int MemberId);
+        MemberViewModel? GetMemberDetails(int MemberId);
 
         HealthRecordViewModel? GetMemberHealthRecord(int MemberId);
 

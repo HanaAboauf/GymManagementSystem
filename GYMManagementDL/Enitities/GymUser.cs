@@ -15,7 +15,6 @@ namespace GYMManagementDL.Enitities
         public string Email { get; set; }=null!;
         public string PhoneNumber { get; set; } = null!;
         public DateOnly DateOfBirth { get; set; }
-        public string Password { get; set; } = null!;
         public Gender Gender { get; set; }
         public Address Address { get; set; } = null!;
     }
