@@ -32,7 +32,7 @@ namespace GYMManagementBLL.ViewModel.TrainerViewModels
         [Phone(ErrorMessage = "Invalid phone number")]
         [RegularExpression(@"^(010|011|012|015)\d{8}$", ErrorMessage = "Ohone number must be valid Egyption number")]
         [DataType(DataType.PhoneNumber)] //UI hint  
-        public string Phone { get; set; } = null!;
+        public string PhoneNumber { get; set; } = null!;
         #endregion
 
         [Required(ErrorMessage = "Date Of Birth is required")]

@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using GYMManagementBLL.Services.Interfaces;
 using GYMManagementPL.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,27 +7,18 @@ namespace GYMManagementPL.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly IAnalyticsDataService _analyticsDataService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(IAnalyticsDataService analyticsDataService)
         {
-            _logger = logger;
+            _analyticsDataService = analyticsDataService;
         }
 
-        public IActionResult Index()
+        public ActionResult Index()
         {
-            return View();
+            var analyticsData = _analyticsDataService.GetAnalyticsData();
+            return View(analyticsData);
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
     }
 }

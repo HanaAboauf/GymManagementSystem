@@ -1,4 +1,5 @@
-﻿using GYMManagementBLL.Services.Interfaces;
+﻿using AutoMapper;
+using GYMManagementBLL.Services.Interfaces;
 using GYMManagementBLL.ViewModel.MemberViewModels;
 using GYMManagementBLL.ViewModel.PlanViewModels;
 using GYMManagementDL.Enitities;
@@ -14,25 +15,32 @@ namespace GYMManagementBLL.Services.Classes
     internal class PlanService : IPlanService
     {
         private readonly IUnitOfWork _unitOfWork;
-  
+        private readonly Mapper _mapper;
 
-        public PlanService(IUnitOfWork unitOfWork)
+        public PlanService(IUnitOfWork unitOfWork,Mapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
         public IEnumerable<PlanViewModel> GetAllPlans()
         {
             var plans = _unitOfWork.GetRepository<Plan>().GetAll();
             if (plans == null ||plans.Any()) return [];
-            return plans.Select(p => new PlanViewModel
-            {
-                Name = p.Name,
-                Description = p.Description,
-                DurationDays = p.DurationDays,
-                Price = p.Price,
-                IsActive = p.IsActive,
-     
-            }).ToList();
+
+            return _mapper.Map<IEnumerable<Plan>, IEnumerable<PlanViewModel>>(plans);
+
+            #region Manual Mapping
+
+            //return plans.Select(p => new PlanViewModel
+            //{
+            //    Name = p.Name,
+            //    Description = p.Description,
+            //    DurationDays = p.DurationDays,
+            //    Price = p.Price,
+            //    IsActive = p.IsActive,
+
+            //}).ToList(); 
+            #endregion
 
         }
 
@@ -40,28 +48,36 @@ namespace GYMManagementBLL.Services.Classes
         {
             var plan=_unitOfWork.GetRepository<Plan>().GetById(id);
             if (plan is null) return null;
-            return new PlanViewModel()
-            {
-                Name = plan.Name,
-                Description = plan.Description,
-                DurationDays = plan.DurationDays,
-                Price = plan.Price,
-                IsActive = plan.IsActive,
-            };
+          return  _mapper.Map<PlanViewModel>(plan);
+
+            #region Manual Mapping
+            //return new PlanViewModel()
+            //{
+            //    Name = plan.Name,
+            //    Description = plan.Description,
+            //    DurationDays = plan.DurationDays,
+            //    Price = plan.Price,
+            //    IsActive = plan.IsActive,
+            //}; 
+            #endregion
         }
 
         public PlanToUpdateViewModel? GetPlanToUpdate(int id)
         {
             var plan = _unitOfWork.GetRepository<Plan>().GetById(id);
             if(plan is null || plan.IsActive == false|| HasActiveMemberShip(id)) return null;
-            return new PlanToUpdateViewModel()
-            {
-                Name = plan.Name,
-                Description = plan.Description,
-                DurationDays = plan.DurationDays,
-                Price = plan.Price,
+           return _mapper.Map<PlanToUpdateViewModel>(plan);
 
-            };
+            #region Manual Mapping
+            //return new PlanToUpdateViewModel()
+            //{
+            //    Name = plan.Name,
+            //    Description = plan.Description,
+            //    DurationDays = plan.DurationDays,
+            //    Price = plan.Price,
+
+            //}; 
+            #endregion
         }
 
         public bool TogglePlanStatus(int id)

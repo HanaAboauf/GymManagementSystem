@@ -1,5 +1,4 @@
-﻿using GYMManagementBLL.ViewModel;
-using GYMManagementBLL.ViewModel.MemberViewModels;
+﻿using GYMManagementBLL.ViewModel.MemberViewModels;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using System;
 using System.Collections.Generic;
