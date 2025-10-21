@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace GYMManagementBLL.Services.Classes
 {
-    internal class TrainerService : ITrainerService
+    public class TrainerService : ITrainerService
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -56,7 +56,7 @@ namespace GYMManagementBLL.Services.Classes
         {
             var Trainers = _unitOfWork.GetRepository<Trainer>().GetAll();
 
-            if (Trainers is null || Trainers.Any()) return [];
+            if (Trainers is null || !Trainers.Any()) return [];
 
             return _mapper.Map<IEnumerable<TrainerViewModel>>(Trainers);
 
@@ -123,7 +123,14 @@ namespace GYMManagementBLL.Services.Classes
 
             if (trainer is null || trainer.Id!=TrainerId) return false;
 
-            _mapper.Map(updatedTrainer, trainer);
+                var EmailExists = _unitOfWork.GetRepository<Trainer>()
+                                 .GetAll(x => x.Email == updatedTrainer.Email && x.Id != TrainerId).Any();
+                var PhoneExists = _unitOfWork.GetRepository<Trainer>()
+                           .GetAll(x => x.Email == updatedTrainer.Phone && x.Id != TrainerId).Any();
+
+                if (EmailExists || PhoneExists) return false;
+
+                _mapper.Map(updatedTrainer, trainer);
 
                 #region Manuall mapping
                 //trainer.Email = updatedTrainer.Email;

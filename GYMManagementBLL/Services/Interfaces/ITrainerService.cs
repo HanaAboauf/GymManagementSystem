@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace GYMManagementBLL.Services.Interfaces
 {
-    internal interface ITrainerService
+    public interface ITrainerService
     {
         IEnumerable<TrainerViewModel> GetAllTrainers();
 

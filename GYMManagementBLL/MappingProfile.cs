@@ -68,7 +68,8 @@ namespace GYMManagementBLL
 
             CreateMap<Member,MemberToUpDateViewModel>().ForMember(dest=>dest.BuildingNumber,opt=>opt.MapFrom(src=>src.Address.BuildingNo))
                                                       .ForMember(dest=>dest.Street,opt=>opt.MapFrom(src=>src.Address.Street))
-                                                      .ForMember(dest=>dest.City,opt=>opt.MapFrom(src=>src.Address.City));
+                                                      .ForMember(dest=>dest.City,opt=>opt.MapFrom(src=>src.Address.City))
+                                                      .ForMember(dest=>dest.Phone,opt=>opt.MapFrom(src=>src.PhoneNumber));
 
             // I used afterMap here because we don't want to create new obj from address we just want to update the existing one
             // Also we ignore name and photo because they won't be updated in this mapping
@@ -86,6 +87,7 @@ namespace GYMManagementBLL
             #endregion
 
             #region Trainer Mapper
+
             CreateMap<CreateTrainerViewModel, Trainer>()
                 .ForMember(dest => dest.Address, opt => opt.MapFrom(src => new Address
                 {
@@ -93,13 +95,19 @@ namespace GYMManagementBLL
                     Street = src.Street,
                     City = src.City
                 }));
-            CreateMap<Trainer, TrainerViewModel>();
+
+            CreateMap<Trainer, TrainerViewModel>()
+                .ForMember(dest => dest.Phone, opt => opt.MapFrom(src => src.PhoneNumber))
+                .ForMember(dest=>dest.Address,opt=>opt.MapFrom(src=>$"{src.Address.BuildingNo} - {src.Address.Street} - {src.Address.City}"));
+
             CreateMap<Trainer, TrainerToUpdateViewModel>()
                 .ForMember(dist => dist.Street, opt => opt.MapFrom(src => src.Address.Street))
                 .ForMember(dist => dist.City, opt => opt.MapFrom(src => src.Address.City))
-                .ForMember(dist => dist.BuildingNumber, opt => opt.MapFrom(src => src.Address.BuildingNo));
+                .ForMember(dist => dist.BuildingNumber, opt => opt.MapFrom(src => src.Address.BuildingNo))
+                .ForMember(dest => dest.Phone, opt => opt.MapFrom(src => src.PhoneNumber));
 
             CreateMap<TrainerToUpdateViewModel, Trainer>()
+            .ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.Phone))
             .ForMember(dest => dest.Name, opt => opt.Ignore())
             .AfterMap((src, dest) =>
             {

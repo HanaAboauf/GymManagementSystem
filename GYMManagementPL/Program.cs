@@ -34,6 +34,8 @@ namespace GYMManagementPL
             builder.Services.AddScoped<ISessionRepository, SessionRepository>();
             builder.Services.AddScoped<IAnalyticsDataService, AnalyticsDataService>();
             builder.Services.AddScoped<IMemberService, MemberService>();
+            builder.Services.AddScoped<ITrainerService, TrainerService>();
+
             builder.Services.AddAutoMapper(x => x.AddProfile(new MappingProfile()));
 
 
@@ -51,9 +53,6 @@ namespace GYMManagementPL
            var pendingMigrations= dbContext.Database.GetPendingMigrations();
             if(pendingMigrations?.Any()??false) dbContext.Database.Migrate();
             GymManagementDbContextSeeding.IsSeeding(dbContext);
-
-
-           
 
             #endregion
 

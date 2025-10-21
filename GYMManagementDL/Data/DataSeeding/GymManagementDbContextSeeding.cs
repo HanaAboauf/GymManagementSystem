@@ -20,7 +20,7 @@ namespace GYMManagementDL.Data.DataSeeding
 
                 if (!HasPlan)
                 {
-                    var plans = LoadDataFromFile<Plan>("filesplans.json");
+                    var plans = LoadDataFromFile<Plan>("plans.json");
                     if(plans.Any() ) dbContext.AddRange(plans);
                 }
                 if (!HasCategories) 
