@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace GYMManagementBLL.Services.Interfaces
 {
-    internal interface IPlanService
+    public interface IPlanService
     {
         IEnumerable<PlanViewModel>GetAllPlans();
 
@@ -15,7 +15,7 @@ namespace GYMManagementBLL.Services.Interfaces
 
         PlanToUpdateViewModel? GetPlanToUpdate(int id);
 
-        bool UpdatePlanDetails(int id,PlanViewModel UpdatedPlan);
+        bool UpdatePlanDetails(int id,PlanToUpdateViewModel UpdatedPlan);
 
         bool TogglePlanStatus(int id);
     }
