@@ -54,9 +54,6 @@ namespace GYMManagementPL
             if(pendingMigrations?.Any()??false) dbContext.Database.Migrate();
             GymManagementDbContextSeeding.IsSeeding(dbContext);
 
-
-           
-
             #endregion
 
             // Configure the HTTP request pipeline.

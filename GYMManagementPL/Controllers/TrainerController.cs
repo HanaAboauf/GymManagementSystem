@@ -120,7 +120,7 @@ namespace GYMManagementPL.Controllers
 
         }
         [HttpPost]
-        public ActionResult DeleteConfirmed([FromRoute] int id)
+        public ActionResult DeleteConfirmed( int id)
         {
             var isDeleted = _trainerService.RemoveTrainer(id);
             if (!isDeleted)

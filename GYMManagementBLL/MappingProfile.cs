@@ -87,6 +87,7 @@ namespace GYMManagementBLL
             #endregion
 
             #region Trainer Mapper
+
             CreateMap<CreateTrainerViewModel, Trainer>()
                 .ForMember(dest => dest.Address, opt => opt.MapFrom(src => new Address
                 {
@@ -95,7 +96,9 @@ namespace GYMManagementBLL
                     City = src.City
                 }));
 
-            CreateMap<Trainer, TrainerViewModel>().ForMember(dest => dest.Phone, opt => opt.MapFrom(src => src.PhoneNumber));
+            CreateMap<Trainer, TrainerViewModel>()
+                .ForMember(dest => dest.Phone, opt => opt.MapFrom(src => src.PhoneNumber))
+                .ForMember(dest=>dest.Address,opt=>opt.MapFrom(src=>$"{src.Address.BuildingNo} - {src.Address.Street} - {src.Address.City}"));
 
             CreateMap<Trainer, TrainerToUpdateViewModel>()
                 .ForMember(dist => dist.Street, opt => opt.MapFrom(src => src.Address.Street))
