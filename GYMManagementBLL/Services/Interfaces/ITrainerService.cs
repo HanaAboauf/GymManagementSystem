@@ -1,5 +1,6 @@
 ﻿using GYMManagementBLL.ViewModel;
 using GYMManagementBLL.ViewModel.MemberViewModels;
+using GYMManagementBLL.ViewModel.SessionViewModels;
 using GYMManagementBLL.ViewModel.TrainerViewModels;
 using System;
 using System.Collections.Generic;
@@ -22,5 +23,7 @@ namespace GYMManagementBLL.Services.Interfaces
         bool UpdateTrainerDetails(int TrainerId, TrainerToUpdateViewModel updatedTrainer);
 
         bool RemoveTrainer(int TrainerId);
+
+
     }
 }

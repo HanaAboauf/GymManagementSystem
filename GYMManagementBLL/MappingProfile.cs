@@ -24,6 +24,10 @@ namespace GYMManagementBLL
             CreateMap<CreateSessionViewModel, Session>();
 
             CreateMap<Session, SessionToUpdateViewModel>().ReverseMap();
+
+            CreateMap<Trainer, TrainerDropDownViewModel>();
+            CreateMap<Category, CategoryDropDownViewModel>().ForMember(dest=>dest.Name,opt=>opt.MapFrom(src=>src.CategoryName));
+
             #endregion
 
             #region Plan Mapper

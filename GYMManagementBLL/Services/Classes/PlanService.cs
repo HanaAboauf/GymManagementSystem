@@ -12,12 +12,12 @@ using System.Threading.Tasks;
 
 namespace GYMManagementBLL.Services.Classes
 {
-    internal class PlanService : IPlanService
+    public class PlanService : IPlanService
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly Mapper _mapper;
+        private readonly IMapper _mapper;
 
-        public PlanService(IUnitOfWork unitOfWork,Mapper mapper)
+        public PlanService(IUnitOfWork unitOfWork,IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
@@ -25,9 +25,9 @@ namespace GYMManagementBLL.Services.Classes
         public IEnumerable<PlanViewModel> GetAllPlans()
         {
             var plans = _unitOfWork.GetRepository<Plan>().GetAll();
-            if (plans == null ||plans.Any()) return [];
+            if (plans == null || !plans.Any()) return [];
 
-            return _mapper.Map<IEnumerable<Plan>, IEnumerable<PlanViewModel>>(plans);
+            return _mapper.Map<IEnumerable<PlanViewModel>>(plans);
 
             #region Manual Mapping
 
@@ -102,7 +102,7 @@ namespace GYMManagementBLL.Services.Classes
 
         }
 
-        public bool UpdatePlanDetails(int id, PlanViewModel UpdatedPlan)
+        public bool UpdatePlanDetails(int id, PlanToUpdateViewModel UpdatedPlan)
         {
             var plan = _unitOfWork.GetRepository<Plan>().GetById(id);
             if (plan is null|| HasActiveMemberShip(id)) return false;

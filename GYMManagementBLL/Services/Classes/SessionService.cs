@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace GYMManagementBLL.Services.Classes
 {
-    internal class SessionService : ISessionService
+    public class SessionService : ISessionService
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -69,7 +69,7 @@ namespace GYMManagementBLL.Services.Classes
 
         public SessionToUpdateViewModel? GetSessionToUpdate(int sessionId)
         {
-          var session=_unitOfWork.SessionRepository.GetById(sessionId);
+          var session=_unitOfWork.GetRepository<Session>().GetById(sessionId);
             if (session == null) return null;
             if(!IsSessionAvailableToUpdating(session)) return null;
 
@@ -115,13 +115,26 @@ namespace GYMManagementBLL.Services.Classes
 
         }
 
+
+        public IEnumerable<TrainerDropDownViewModel> GetTrainerDropDownList()
+        {
+            var trainers = _unitOfWork.GetRepository<Trainer>().GetAll().ToList();
+            return _mapper.Map<IEnumerable<TrainerDropDownViewModel>>(trainers);
+        }
+
+        public IEnumerable<CategoryDropDownViewModel> GetCategoryDropDownList()
+        {
+            var categories = _unitOfWork.GetRepository<Category>().GetAll().ToList();
+            return _mapper.Map<IEnumerable<CategoryDropDownViewModel>>(categories);
+        }
+
         #region Helper Methods
 
         bool IsCategoryExists(int categoryId)=>_unitOfWork.GetRepository<Category>().GetById(categoryId) is not null;
 
         bool IsTrainerExists(int trainerId) => _unitOfWork.GetRepository<Trainer>().GetById(trainerId) is not null;
 
-        bool IsDateValid(DateTime startDate, DateTime endDate) => startDate > endDate;
+        bool IsDateValid(DateTime startDate, DateTime endDate) => startDate < endDate;
 
         bool IsSessionAvailableToUpdating(Session session)
         {
@@ -154,6 +167,7 @@ namespace GYMManagementBLL.Services.Classes
             return true;
 
         }
+
         #endregion
     }
 }
