@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using GYMManagementBLL.Services.AttachmentService;
 using GYMManagementBLL.Services.Interfaces;
 using GYMManagementBLL.ViewModel.MemberViewModels;
 using GYMManagementDL.Enitities;
@@ -16,12 +17,14 @@ namespace GYMManagementBLL.Services.Classes
         private readonly IUnitOfWork _unitOfWok;
         private readonly IPlanRepository _planRepository;
         private readonly IMapper _mapper;
+        private readonly IAttachmentService _AttachmentService;
 
-        public MemberService(IUnitOfWork unitOfWok,IPlanRepository planRepository, IMapper mapper)
+        public MemberService(IUnitOfWork unitOfWok,IPlanRepository planRepository, IMapper mapper, IAttachmentService attachmentService)
         {
            _unitOfWok = unitOfWok;
            _planRepository = planRepository;
            _mapper = mapper;
+            _AttachmentService = attachmentService;
         }
 
 
@@ -31,6 +34,8 @@ namespace GYMManagementBLL.Services.Classes
             {
 
                 if (IsEmailExists(createdMember.Email) || IsPhoneExists(createdMember.Phone)) return false;
+
+                var photoFileName = _AttachmentService.Upload("members", createdMember.PhotoFile!);
 
                 #region Mauall mapping
                 //    var member=new Member()
@@ -59,9 +64,19 @@ namespace GYMManagementBLL.Services.Classes
                 #endregion
 
                 var member = _mapper.Map<Member>(createdMember);
+                member.Photo = photoFileName!;
                 _unitOfWok.GetRepository<Member>().Add(member);
 
-                return _unitOfWok.SaveChanges()>0;
+                var isUploaded= _unitOfWok.SaveChanges()>0;
+                if (isUploaded)
+                {
+                    return true;
+                }
+                else
+                {
+                    _AttachmentService.Delete("members", photoFileName!);
+                    return false;
+                }
 
             }
             catch { 
@@ -173,7 +188,10 @@ namespace GYMManagementBLL.Services.Classes
                 }
                 _unitOfWok.GetRepository<Member>().Delete(member);
 
-                return _unitOfWok.SaveChanges()>0;
+                var isDeleted= _unitOfWok.SaveChanges()>0;
+                if (isDeleted)
+                    _AttachmentService.Delete("members", member.Photo);
+                return isDeleted;
 
             }
             catch

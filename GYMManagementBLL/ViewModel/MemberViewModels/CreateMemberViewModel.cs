@@ -1,4 +1,5 @@
 ﻿using GYMManagementDL.Enitities.Enums;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -10,6 +11,12 @@ namespace GYMManagementBLL.ViewModel.MemberViewModels
 {
     public class CreateMemberViewModel
     {
+        #region Photo property
+
+        [Required(ErrorMessage = "Photo is required")]
+        [Display(Name = "Profile Photo")]
+        public IFormFile? PhotoFile { get; set; }
+        #endregion
         #region Name property
 
         [Required(ErrorMessage = "Name is required")]

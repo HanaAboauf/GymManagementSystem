@@ -1,4 +1,5 @@
 using GYMManagementBLL;
+using GYMManagementBLL.Services.AttachmentService;
 using GYMManagementBLL.Services.Classes;
 using GYMManagementBLL.Services.Interfaces;
 using GYMManagementDL.Data.Contexts;
@@ -37,6 +38,7 @@ namespace GYMManagementPL
             builder.Services.AddScoped<ITrainerService, TrainerService>();
             builder.Services.AddScoped<IPlanService, PlanService>();
             builder.Services.AddScoped<ISessionService, SessionService>();
+            builder.Services.AddScoped<IAttachmentService, AttachmentService>();
 
 
             builder.Services.AddAutoMapper(x => x.AddProfile(new MappingProfile()));
