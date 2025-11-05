@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using GYMManagementBLL.ViewModel.MembershipsViewModels;
 using GYMManagementBLL.ViewModel.MemberViewModels;
 using GYMManagementBLL.ViewModel.PlanViewModels;
 using GYMManagementBLL.ViewModel.SessionViewModels;
@@ -120,6 +121,20 @@ namespace GYMManagementBLL
                 dest.Address.Street = src.Street;
                 dest.UpdatedAt = DateTime.Now;
             });
+            #endregion
+
+            #region Memberships
+
+            CreateMap<MemberShip, MembershipsViewModel>()
+                .ForMember(dest => dest.MemberName, opt => opt.MapFrom(src => src.Member.Name))
+                .ForMember(dest => dest.PlanName, opt => opt.MapFrom(src => src.Plan.Name))
+                .ForMember(dest => dest.StartDate, opt => opt.MapFrom(src => src.CreatedAt));
+
+            CreateMap<CreateMembershipViewModel, MemberShip>();
+
+            CreateMap<Plan, PlanDropDownViewModel>();
+
+            CreateMap<Member, MemberDropDownViewModel>();
             #endregion
 
 
