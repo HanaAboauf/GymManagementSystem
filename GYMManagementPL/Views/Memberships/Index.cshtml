@@ -60,7 +60,7 @@
                                 <td>@memberships.EndDate.ToShortDateString()</td>
                                 <td>
                                     <div class="d-flex gap-1">
-                                        <form method="post" asp-controller="Memberships" asp-action="Delete" class="m-0">
+                                        <form method="post" asp-action="Delete" class="m-0">
 
                                             <input type="hidden" name="id" value="@memberships.Id"  />
                                             <button type="submit" class="btn btn-sm btn-danger">

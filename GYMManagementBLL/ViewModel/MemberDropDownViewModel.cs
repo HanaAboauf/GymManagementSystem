@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GYMManagementBLL.ViewModel.MembershipsViewModels
+namespace GYMManagementBLL.ViewModel
 {
     public class MemberDropDownViewModel
     {

@@ -15,16 +15,19 @@ namespace GYMManagementDL.Repositories.Classes
         private readonly GymManagementDbContext _context;
         private readonly Dictionary<Type, object> _repositories = new(); 
 
-        public UnitOfWork(GymManagementDbContext context, ISessionRepository sessionRepository,IMembershipRepository membershipRepository)
+        public UnitOfWork(GymManagementDbContext context, ISessionRepository sessionRepository,IMembershipRepository membershipRepository,IMemberSessionsRepository memberSessionsRepository )
         {
             _context = context;
             SessionRepository = sessionRepository;
             MembershipRepository = membershipRepository;
+            MemberSessionsRepository= memberSessionsRepository;
         }
 
         public ISessionRepository SessionRepository { get; }
 
         public IMembershipRepository MembershipRepository { get; }
+
+        public IMemberSessionsRepository MemberSessionsRepository { get; }
 
         public IGenericRepository<TEntity> GetRepository<TEntity>() where TEntity : BaseEntity, new()
         {

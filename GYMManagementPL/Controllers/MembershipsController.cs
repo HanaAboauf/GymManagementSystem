@@ -37,7 +37,6 @@ namespace GYMManagementPL.Controllers
                 GetPlanDropdown();
                 GetMemberDropdown();
                 TempData["ErrorMessage"] = "Check your data";
-                ModelState.AddModelError("DataInValid", "check your data");
                 return View(createdMembership);
             }
 

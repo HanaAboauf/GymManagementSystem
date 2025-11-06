@@ -12,6 +12,8 @@ namespace GYMManagementDL.Repositories.Interfaces
     {
         public ISessionRepository SessionRepository { get;}
         public IMembershipRepository MembershipRepository { get;}
+        public IMemberSessionsRepository MemberSessionsRepository { get; }
+
         IGenericRepository<TEntity> GetRepository<TEntity> () where TEntity : BaseEntity, new();
 
         int SaveChanges();

@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using GYMManagementBLL.ViewModel;
+using GYMManagementBLL.ViewModel.MemberScheduleViewModels;
 using GYMManagementBLL.ViewModel.MembershipsViewModels;
 using GYMManagementBLL.ViewModel.MemberViewModels;
 using GYMManagementBLL.ViewModel.PlanViewModels;
@@ -135,6 +137,11 @@ namespace GYMManagementBLL
             CreateMap<Plan, PlanDropDownViewModel>();
 
             CreateMap<Member, MemberDropDownViewModel>();
+            #endregion
+
+            #region MemberSession
+
+            CreateMap<CreateMemberSessionViewModel, MemberSession>();
             #endregion
 
 

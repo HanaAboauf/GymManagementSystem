@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.Execution;
 using GYMManagementBLL.Services.Interfaces;
+using GYMManagementBLL.ViewModel;
 using GYMManagementBLL.ViewModel.MembershipsViewModels;
 using GYMManagementDL.Enitities;
 using GYMManagementDL.Repositories.Interfaces;
@@ -48,7 +49,7 @@ namespace GYMManagementBLL.Services.Classes
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Can't create this membership {ex}");
+                Console.WriteLine($"Can't create this membership {ex.Message}");
                 return false;
 
             }
@@ -100,7 +101,7 @@ namespace GYMManagementBLL.Services.Classes
 
         bool MemberHasMemberShip(int memberId)
         {
-            var membership = _UnitOfWork.GetRepository<MemberShip>().GetAll(ms => ms.MemberId == memberId && ms.Status == "Active");
+            var membership = _UnitOfWork.GetRepository<MemberShip>().GetAll(ms => ms.MemberId == memberId);
             return membership ==null;
         }
 
