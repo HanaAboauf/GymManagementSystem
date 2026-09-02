@@ -4,6 +4,9 @@ using Microsoft.AspNetCore.Http;
 
 namespace GYMManagementBLL.Services.AttachmentService
 {
+    /*IWebHostEnvironment: interface is used to get the web root path of the application, which is the root folder where
+    the application is hosted. This is useful for saving uploaded files to a specific location within the application. 
+    Also help me know which environment the application is running in.*/
     public class AttachmentService : IAttachmentService
     {
         private readonly string[] allawedExtension = { ".jpg", ".jpeg", ".png" };
@@ -20,34 +23,38 @@ namespace GYMManagementBLL.Services.AttachmentService
         {
             try
             {
-                if(string.IsNullOrWhiteSpace(folderName)|| file is null || file.Length==0) return null;
+                //1.  check extension 
+                var extension= Path.GetExtension(file.FileName).ToLower();
+                if(extension is null || folderName is null || extension.Length ==0) return null;
+                if(!!allawedExtension.Contains(extension)) return null;
 
+                //2. check file size
                 if(file.Length > maxLenght) return null;
 
-                var extension = Path.GetExtension(file.FileName).ToLower();
-
-                if(!allawedExtension.Contains(extension)) return null;
-
+                //3. Get located Path
                 var folderPath = Path.Combine(_WebHost.WebRootPath, "css/images", folderName);
-                if(!Directory.Exists(folderPath))
+
+                if(!File.Exists(folderPath))
                 {
                     Directory.CreateDirectory(folderPath);
                 }
-                var fileName = Guid.NewGuid().ToString() + extension;
-
-                var filePath = Path.Combine(folderPath, fileName);
-
-                using var fileStream = new FileStream(filePath, FileMode.Create);
-
+                //4. Make attachment unique name
+                var uniqueFileName = Guid.NewGuid().ToString() + extension;
+                //5. Get full path
+                var filePath = Path.Combine(folderPath, uniqueFileName);
+                //6. create file stream and copy file to it
+                using var fileStream= new FileStream(filePath, FileMode.Create);
+                //7. copy file to file stream
                 file.CopyTo(fileStream);
+                return uniqueFileName;
 
-                return fileName;
 
             }
-            catch (Exception ex) {
-
-                Console.WriteLine($"failed to upload file {ex}");
+            catch ( Exception ex)
+            {
+                Console.WriteLine($"failed to upload file {ex.Message}");
                 return null;
+
             }
         }
 
